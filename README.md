@@ -1,2 +1,2 @@
 # containers
-base data structure and algorithm implemention in go
+base data structure and algorithm implement in go by genericity
