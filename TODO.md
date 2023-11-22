@@ -26,7 +26,7 @@
   - HufmanTree
   
 - queue
-  - ArrayQueue
+  - ArrayQueue (√)
   - LinkedQueue
   - PriorityQueue (√) 
   - CircularQueue
