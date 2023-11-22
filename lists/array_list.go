@@ -106,7 +106,7 @@ func (a *ArrayList[T]) Size() int {
 }
 
 func (a *ArrayList[T]) Clear() {
-	a.elems = a.elems[:0]
+	a.elems = a.elems[:0:0]
 }
 
 func (a *ArrayList[T]) Clone() List[T] {
