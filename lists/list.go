@@ -26,8 +26,8 @@ type List[T any] interface {
 	Clone() List[T]
 	// Join joins the given list into the original list
 	Join(list List[T])
-	// Iterator returns a list iterator
-	Iterator(reverse bool) containers.IndexIterator[T]
+
+	containers.IndexIterable[T]
 
 	containers.Container[T]
 }

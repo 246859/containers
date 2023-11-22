@@ -1,8 +1,17 @@
 package containers
 
+// Iterable is the base interface of all data structures that can be iterated over
+type Iterable[K any, V any] interface {
+	Iterator(reverse bool) Iterator[K, V]
+}
+
+// IndexIterable is the base interface of all data structures that can be iterated over by slice index
+type IndexIterable[V any] interface {
+	Iterator(reverse bool) IndexIterator[V]
+}
+
 // Iterator is the base interface of the all data structures iterators
-// K is the index type
-// V is the value type
+// iterator is readonly, represents of data snapshot at a certain moment
 type Iterator[K any, V any] interface {
 	// Rewind set the iterator index to the initial state
 	Rewind()
@@ -24,12 +33,14 @@ type Iterator[K any, V any] interface {
 }
 
 // IndexIterator is base interface of iterator which use slice index
-type IndexIterator[T any] interface {
-	Iterator[int, T]
+type IndexIterator[V any] interface {
+	Iterator[int, V]
 }
 
-func NewArrayIndexIterator[T any](reverse bool, elems ...T) *ArrayIndexIterator[T] {
-	it := &ArrayIndexIterator[T]{
+var _ IndexIterator[any] = (*SliceIndexIterator[any])(nil)
+
+func NewSliceIndexIterator[T any](reverse bool, elems ...T) *SliceIndexIterator[T] {
+	it := &SliceIndexIterator[T]{
 		reverse: reverse,
 		elems:   elems,
 	}
@@ -37,26 +48,24 @@ func NewArrayIndexIterator[T any](reverse bool, elems ...T) *ArrayIndexIterator[
 	return it
 }
 
-var _ IndexIterator[any] = (*ArrayIndexIterator[any])(nil)
-
-type ArrayIndexIterator[T any] struct {
+type SliceIndexIterator[T any] struct {
 	elems   []T
 	index   int
 	reverse bool
 }
 
-func (a *ArrayIndexIterator[T]) Rewind() {
+func (a *SliceIndexIterator[T]) Rewind() {
 	a.index = -1
 	if a.reverse {
 		a.index = len(a.elems)
 	}
 }
 
-func (a *ArrayIndexIterator[T]) Reverse() {
+func (a *SliceIndexIterator[T]) Reverse() {
 	a.reverse = !a.reverse
 }
 
-func (a *ArrayIndexIterator[T]) Next() bool {
+func (a *SliceIndexIterator[T]) Next() bool {
 	if !a.reverse && a.index < len(a.elems) {
 		a.index++
 		return a.index < len(a.elems)
@@ -67,15 +76,15 @@ func (a *ArrayIndexIterator[T]) Next() bool {
 	return false
 }
 
-func (a *ArrayIndexIterator[T]) Index() int {
+func (a *SliceIndexIterator[T]) Index() int {
 	return a.index
 }
 
-func (a *ArrayIndexIterator[T]) Value() T {
+func (a *SliceIndexIterator[T]) Value() T {
 	return a.elems[a.Index()]
 }
 
-func (a *ArrayIndexIterator[T]) SeekTo(index int) bool {
+func (a *SliceIndexIterator[T]) SeekTo(index int) bool {
 	if index >= 0 && index < len(a.elems) {
 		a.index = index
 		return true

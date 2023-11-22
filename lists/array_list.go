@@ -80,7 +80,7 @@ func (a *ArrayList[T]) Iterator(reverse bool) containers.IndexIterator[T] {
 	size := a.Size()
 	snapshot := make([]T, size)
 	copy(snapshot, a.elems[:size])
-	return containers.NewArrayIndexIterator(reverse, snapshot...)
+	return containers.NewSliceIndexIterator(reverse, snapshot...)
 }
 
 func (a *ArrayList[T]) Values() (_ []T) {
