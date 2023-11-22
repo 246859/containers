@@ -22,3 +22,7 @@ type Iterator[K any, V any] interface {
 	// SeekTo move current index to the given index, returns true if success, or returns false
 	SeekTo(index K) bool
 }
+
+type IndexIterator[T any] interface {
+	Iterator[int, T]
+}
