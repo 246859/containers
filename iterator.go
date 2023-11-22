@@ -23,6 +23,62 @@ type Iterator[K any, V any] interface {
 	SeekTo(index K) bool
 }
 
+// IndexIterator is base interface of iterator which use slice index
 type IndexIterator[T any] interface {
 	Iterator[int, T]
+}
+
+func NewArrayIndexIterator[T any](reverse bool, elems ...T) *ArrayIndexIterator[T] {
+	it := &ArrayIndexIterator[T]{
+		reverse: reverse,
+		elems:   elems,
+	}
+	it.Rewind()
+	return it
+}
+
+var _ IndexIterator[any] = (*ArrayIndexIterator[any])(nil)
+
+type ArrayIndexIterator[T any] struct {
+	elems   []T
+	index   int
+	reverse bool
+}
+
+func (a *ArrayIndexIterator[T]) Rewind() {
+	a.index = -1
+	if a.reverse {
+		a.index = len(a.elems)
+	}
+}
+
+func (a *ArrayIndexIterator[T]) Reverse() {
+	a.reverse = !a.reverse
+}
+
+func (a *ArrayIndexIterator[T]) Next() bool {
+	if !a.reverse && a.index < len(a.elems) {
+		a.index++
+		return a.index < len(a.elems)
+	} else if a.reverse && a.index >= 0 {
+		a.index--
+		return a.index >= 0
+	}
+	return false
+}
+
+func (a *ArrayIndexIterator[T]) Index() int {
+	return a.index
+}
+
+func (a *ArrayIndexIterator[T]) Value() T {
+	return a.elems[a.Index()]
+}
+
+func (a *ArrayIndexIterator[T]) SeekTo(index int) bool {
+	if index >= 0 && index < len(a.elems) {
+		a.index = index
+		return true
+	}
+	return false
 }

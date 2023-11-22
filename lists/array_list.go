@@ -80,13 +80,7 @@ func (a *ArrayList[T]) Iterator(reverse bool) containers.IndexIterator[T] {
 	size := a.Size()
 	snapshot := make([]T, size)
 	copy(snapshot, a.elems[:size])
-
-	it := &arrayListIterator[T]{
-		elems:   snapshot,
-		reverse: reverse,
-	}
-	it.Rewind()
-	return it
+	return containers.NewArrayIndexIterator(reverse, snapshot...)
 }
 
 func (a *ArrayList[T]) Values() (_ []T) {
@@ -136,51 +130,4 @@ func (a *ArrayList[T]) String() string {
 
 func (a *ArrayList[T]) checkI(i int) bool {
 	return i >= 0 && i < len(a.elems)
-}
-
-var _ containers.IndexIterator[any] = (*arrayListIterator[any])(nil)
-
-// arraylist iterator
-type arrayListIterator[T any] struct {
-	elems   []T
-	index   int
-	reverse bool
-}
-
-func (a *arrayListIterator[T]) Rewind() {
-	a.index = -1
-	if a.reverse {
-		a.index = len(a.elems)
-	}
-}
-
-func (a *arrayListIterator[T]) Reverse() {
-	a.reverse = !a.reverse
-}
-
-func (a *arrayListIterator[T]) Next() bool {
-	if !a.reverse && a.index < len(a.elems) {
-		a.index++
-		return a.index < len(a.elems)
-	} else if a.reverse && a.index >= 0 {
-		a.index--
-		return a.index >= 0
-	}
-	return false
-}
-
-func (a *arrayListIterator[T]) Index() int {
-	return a.index
-}
-
-func (a *arrayListIterator[T]) Value() T {
-	return a.elems[a.Index()]
-}
-
-func (a *arrayListIterator[T]) SeekTo(index int) bool {
-	if index >= 0 && index < len(a.elems) {
-		a.index = index
-		return true
-	}
-	return false
 }
