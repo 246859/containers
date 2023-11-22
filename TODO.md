@@ -1,7 +1,7 @@
 # implement data structure
 
 - list
-  - ArrayList (√)
+  - ArrayList ✔️
   - LinkedList
   - SinglyList
 
@@ -26,9 +26,9 @@
   - HufmanTree
   
 - queue
-  - ArrayQueue (√)
+  - ArrayQueue ✔️
   - LinkedQueue
-  - PriorityQueue (√) 
+  - PriorityQueue ✔️ 
   - CircularQueue
   - DeQueue
   
@@ -37,7 +37,7 @@
   - LinkedStack
   
 - heap
-  - BinaryHeap (√)
+  - BinaryHeap ✔️
   - LeftistHeap
   - BinomialHeap
   - PairingHeap
