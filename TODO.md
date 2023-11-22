@@ -26,7 +26,7 @@
   - HufmanTree
   
 - queue
-  - ArrayQueue
+  - ArrayQueue (√)
   - LinkedQueue
   - PriorityQueue (√) 
   - CircularQueue
@@ -38,3 +38,7 @@
   
 - heap
   - BinaryHeap (√)
+  - LeftistHeap
+  - BinomialHeap
+  - PairingHeap
+  - RankPairingHeap

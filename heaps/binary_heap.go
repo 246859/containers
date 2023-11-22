@@ -63,46 +63,47 @@ func (heap *BinaryHeap[T]) Pop() (_ T, _ bool) {
 	return elem, true
 }
 
-func (heap *BinaryHeap[T]) Iterator(reverse bool) containers.IndexIterator[T] {
+func (heap *BinaryHeap[T]) Remove(i int) {
 	size := heap.Size()
-	_, has := heap.Peek()
-
-	snapshot := make([]T, 0, size)
-	idxQueue := make([]int, 0, size)
-
-	if has {
-		idxQueue = append(idxQueue, 0)
+	if i < 0 || i > size {
+		return
 	}
+	n := size - 1
+	lists.Swap[T](heap.list, i, n)
+	heap.list.Remove(n)
+	heap.down(i)
+}
 
-	// BFS binary heap
-	for len(idxQueue) > 0 {
-		length := len(idxQueue)
-		for i := 0; i < length; i++ {
-			index := idxQueue[0]
-			idxQueue = idxQueue[1:]
-
-			if index < 0 || index >= size {
-				continue
-			}
-
-			elem, has := heap.list.Get(index)
-			if has {
-				snapshot = append(snapshot, elem)
-			}
-
-			// append child node
-			ls := index<<1 + 1
-			rs := ls + 1
-			idxQueue = append(idxQueue, ls, rs)
-		}
+func (heap *BinaryHeap[T]) Fix(i int, k T) {
+	ele, has := heap.list.Get(i)
+	if !has {
+		return
 	}
+	n := heap.Size() - 1
 
-	return containers.NewSliceIndexIterator(reverse, snapshot...)
+	switch heap.cmp(k, ele) {
+	case containers.LessThan:
+		heap.list.Set(i, k)
+		lists.Swap[T](heap.list, 0, i)
+		heap.down(0)
+	case containers.GreaterThan:
+		heap.list.Set(i, k)
+		lists.Swap[T](heap.list, n, i)
+		heap.up(n)
+	}
+}
+
+func (heap *BinaryHeap[T]) Merge(h Heap[T]) {
+	heap.Push(h.Values()...)
+}
+
+func (heap *BinaryHeap[T]) Iterator() containers.IndexIterator[T] {
+	return heap.list.Iterator()
 }
 
 func (heap *BinaryHeap[T]) Values() []T {
 	var vals []T
-	it := heap.Iterator(false)
+	it := heap.Iterator()
 	for it.Next() {
 		vals = append(vals, it.Value())
 	}

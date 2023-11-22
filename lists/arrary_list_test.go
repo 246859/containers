@@ -177,7 +177,7 @@ func TestArrayList_Iterator(t *testing.T) {
 	list := NewArrayList[int](32, containers.OrderedEqual[int])
 	list.Add(data...)
 
-	it := list.Iterator(false)
+	it := list.Iterator()
 	for it.Next() {
 		assert.Equal(t, data[it.Index()], it.Value())
 	}

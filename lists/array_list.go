@@ -76,11 +76,8 @@ func (a *ArrayList[T]) Contains(elem T) bool {
 	return a.IndexOf(elem) > -1
 }
 
-func (a *ArrayList[T]) Iterator(reverse bool) containers.IndexIterator[T] {
-	size := a.Size()
-	snapshot := make([]T, size)
-	copy(snapshot, a.elems[:size])
-	return containers.NewSliceIndexIterator(reverse, snapshot...)
+func (a *ArrayList[T]) Iterator() containers.IndexIterator[T] {
+	return newListIterator[T](a)
 }
 
 func (a *ArrayList[T]) Values() (_ []T) {
@@ -88,7 +85,7 @@ func (a *ArrayList[T]) Values() (_ []T) {
 		return
 	}
 	var vs []T
-	it := a.Iterator(false)
+	it := a.Iterator()
 	for it.Next() {
 		vs = append(vs, it.Value())
 	}
@@ -118,7 +115,7 @@ func (a *ArrayList[T]) Join(list List[T]) {
 		return
 	}
 
-	it := list.Iterator(false)
+	it := list.Iterator()
 	for it.Next() {
 		a.Add(it.Value())
 	}

@@ -42,6 +42,35 @@ func TestBinaryHeap_Peek(t *testing.T) {
 	assert.Equal(t, 1, ele1)
 }
 
+func TestBinaryHeap_Remove(t *testing.T) {
+	data := []int{2, 1, 4, 6, -1}
+	heap := NewBinaryHeap[int](32, containers.OrderedCompare[int])
+	heap.Push(data...)
+	// -1 1 4 6 2
+
+	heap.Remove(0)
+
+	peek, b := heap.Peek()
+	assert.True(t, b)
+	assert.Equal(t, 1, peek)
+}
+
+func TestBinaryHeap_Fix(t *testing.T) {
+	data := []int{2, 1, 4, 6, -1}
+	heap := NewBinaryHeap[int](32, containers.OrderedCompare[int])
+	heap.Push(data...)
+	// -1 1 4 6 2
+
+	heap.Fix(1, -2)
+
+	peek, b := heap.Peek()
+	assert.True(t, b)
+	assert.Equal(t, -2, peek)
+
+	heap.Fix(1, 100)
+	assert.Equal(t, 100, heap.Values()[heap.Size()-1])
+}
+
 func TestBinaryHeap_Values(t *testing.T) {
 	data := []int{2, 1, 4, 6, -1}
 	heap := NewBinaryHeap[int](32, containers.OrderedCompare[int])
@@ -57,7 +86,7 @@ func TestBinaryHeap_Iterator(t *testing.T) {
 	heap := NewBinaryHeap[int](32, containers.OrderedCompare[int])
 	heap.Push(data...)
 
-	it := heap.Iterator(false)
+	it := heap.Iterator()
 	for it.Next() {
 		it.Value()
 	}
