@@ -38,3 +38,7 @@
   
 - heap
   - BinaryHeap (√)
+  - LeftistHeap
+  - BinomialHeap
+  - PairingHeap
+  - RankPairingHeap
