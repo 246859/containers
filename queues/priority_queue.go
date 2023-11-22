@@ -7,17 +7,23 @@ import (
 
 var _ Queue[any] = (*PriorityQueue[any])(nil)
 
+// NewPriorityQueue defaults use binary heap to implement
 func NewPriorityQueue[T any](capacity int, compare containers.Compare[T]) *PriorityQueue[T] {
 	return &PriorityQueue[T]{
-		heap:    heaps.NewBinaryHeap[T](capacity, compare),
-		compare: compare,
+		heap: heaps.NewBinaryHeap[T](capacity, compare),
 	}
 }
 
-// PriorityQueue implements by binary heap
+// NewPriorityQueueWith returns a PriorityQueue implemented by the given custom heap
+func NewPriorityQueueWith[T any](heap heaps.Heap[T]) *PriorityQueue[T] {
+	return &PriorityQueue[T]{
+		heap: heap,
+	}
+}
+
+// PriorityQueue implements by heap
 type PriorityQueue[T any] struct {
-	heap    *heaps.BinaryHeap[T]
-	compare containers.Compare[T]
+	heap heaps.Heap[T]
 }
 
 func (p *PriorityQueue[T]) Push(es ...T) {
