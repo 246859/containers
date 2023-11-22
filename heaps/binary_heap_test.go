@@ -86,7 +86,7 @@ func TestBinaryHeap_Iterator(t *testing.T) {
 	heap := NewBinaryHeap[int](32, containers.OrderedCompare[int])
 	heap.Push(data...)
 
-	it := heap.Iterator(false)
+	it := heap.Iterator()
 	for it.Next() {
 		it.Value()
 	}

@@ -3,6 +3,7 @@ package queues
 import (
 	"fmt"
 	"github.com/246859/containers"
+	"github.com/246859/containers/internal"
 )
 
 var _ Queue[any] = (*ArrayQueue[any])(nil)
@@ -36,16 +37,13 @@ func (queue *ArrayQueue[T]) Pop() (_ T, _ bool) {
 	return peek, true
 }
 
-func (queue *ArrayQueue[T]) Iterator(reverse bool) containers.IndexIterator[T] {
-	size := queue.Size()
-	snapshot := make([]T, size)
-	copy(snapshot, queue.s[:size])
-	return containers.NewSliceIndexIterator(reverse, snapshot...)
+func (queue *ArrayQueue[T]) Iterator() containers.IndexIterator[T] {
+	return internal.NewSliceIterator(queue.s)
 }
 
 func (queue *ArrayQueue[T]) Values() []T {
 	var vals []T
-	it := queue.Iterator(false)
+	it := queue.Iterator()
 	for it.Next() {
 		vals = append(vals, it.Value())
 	}

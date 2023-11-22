@@ -38,8 +38,8 @@ func (p *PriorityQueue[T]) Pop() (_ T, _ bool) {
 	return p.heap.Pop()
 }
 
-func (p *PriorityQueue[T]) Iterator(reverse bool) containers.IndexIterator[T] {
-	return p.heap.Iterator(reverse)
+func (p *PriorityQueue[T]) Iterator() containers.IndexIterator[T] {
+	return p.heap.Iterator()
 }
 
 func (p *PriorityQueue[T]) Values() []T {

@@ -2,12 +2,12 @@ package containers
 
 // Iterable is the base interface of all data structures that can be iterated over
 type Iterable[K any, V any] interface {
-	Iterator(reverse bool) Iterator[K, V]
+	Iterator() Iterator[K, V]
 }
 
 // IndexIterable is the base interface of all data structures that can be iterated over by slice index
 type IndexIterable[V any] interface {
-	Iterator(reverse bool) IndexIterator[V]
+	Iterator() IndexIterator[V]
 }
 
 // Iterator is the base interface of the all data structures iterators
@@ -35,59 +35,4 @@ type Iterator[K any, V any] interface {
 // IndexIterator is base interface of iterator which use slice index
 type IndexIterator[V any] interface {
 	Iterator[int, V]
-}
-
-var _ IndexIterator[any] = (*SliceIndexIterator[any])(nil)
-
-func NewSliceIndexIterator[T any](reverse bool, elems ...T) *SliceIndexIterator[T] {
-	it := &SliceIndexIterator[T]{
-		reverse: reverse,
-		elems:   elems,
-	}
-	it.Rewind()
-	return it
-}
-
-type SliceIndexIterator[T any] struct {
-	elems   []T
-	index   int
-	reverse bool
-}
-
-func (a *SliceIndexIterator[T]) Rewind() {
-	a.index = -1
-	if a.reverse {
-		a.index = len(a.elems)
-	}
-}
-
-func (a *SliceIndexIterator[T]) Reverse() {
-	a.reverse = !a.reverse
-}
-
-func (a *SliceIndexIterator[T]) Next() bool {
-	if !a.reverse && a.index < len(a.elems) {
-		a.index++
-		return a.index < len(a.elems)
-	} else if a.reverse && a.index >= 0 {
-		a.index--
-		return a.index >= 0
-	}
-	return false
-}
-
-func (a *SliceIndexIterator[T]) Index() int {
-	return a.index
-}
-
-func (a *SliceIndexIterator[T]) Value() T {
-	return a.elems[a.Index()]
-}
-
-func (a *SliceIndexIterator[T]) SeekTo(index int) bool {
-	if index >= 0 && index < len(a.elems) {
-		a.index = index
-		return true
-	}
-	return false
 }

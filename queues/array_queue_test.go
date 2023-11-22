@@ -42,7 +42,7 @@ func TestArrayQueue_Iterator(t *testing.T) {
 	queue.Push(data[:5]...)
 	queue.Push(data[5:]...)
 
-	it := queue.Iterator(false)
+	it := queue.Iterator()
 	for it.Next() {
 		assert.Equal(t, data[it.Index()], it.Value())
 	}

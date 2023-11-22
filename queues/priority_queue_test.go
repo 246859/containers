@@ -57,7 +57,7 @@ func TestPriorityQueue_Iterator(t *testing.T) {
 	pQueue := NewPriorityQueue[int](32, containers.OrderedCompare[int])
 	pQueue.Push(data...)
 
-	it := pQueue.Iterator(false)
+	it := pQueue.Iterator()
 	for it.Next() {
 		it.Value()
 	}

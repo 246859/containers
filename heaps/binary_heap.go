@@ -97,16 +97,13 @@ func (heap *BinaryHeap[T]) Merge(h Heap[T]) {
 	heap.Push(h.Values()...)
 }
 
-func (heap *BinaryHeap[T]) Iterator(reverse bool) containers.IndexIterator[T] {
-	size := heap.Size()
-	snapshot := make([]T, size)
-	copy(snapshot, heap.list.Values()[:size])
-	return containers.NewSliceIndexIterator(reverse, snapshot...)
+func (heap *BinaryHeap[T]) Iterator() containers.IndexIterator[T] {
+	return heap.list.Iterator()
 }
 
 func (heap *BinaryHeap[T]) Values() []T {
 	var vals []T
-	it := heap.Iterator(false)
+	it := heap.Iterator()
 	for it.Next() {
 		vals = append(vals, it.Value())
 	}
