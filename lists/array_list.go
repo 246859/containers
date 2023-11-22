@@ -76,7 +76,7 @@ func (a *ArrayList[T]) Contains(elem T) bool {
 	return a.IndexOf(elem) > -1
 }
 
-func (a *ArrayList[T]) Iterator(reverse bool) ListIterator[T] {
+func (a *ArrayList[T]) Iterator(reverse bool) containers.IndexIterator[T] {
 	size := a.Size()
 	snapshot := make([]T, size)
 	copy(snapshot, a.elems[:size])
@@ -138,7 +138,7 @@ func (a *ArrayList[T]) checkI(i int) bool {
 	return i >= 0 && i < len(a.elems)
 }
 
-var _ ListIterator[any] = (*arrayListIterator[any])(nil)
+var _ containers.IndexIterator[any] = (*arrayListIterator[any])(nil)
 
 // arraylist iterator
 type arrayListIterator[T any] struct {
