@@ -92,12 +92,12 @@ func (hmap *HMap[T, K, V]) Clone() Map[K, V] {
 
 func (hmap *HMap[T, K, V]) Copy(src Map[K, V]) {
 	keys := src.Keys()
-	values := src.Values()
 
-	for i, key := range keys {
+	for _, key := range keys {
 		kx := hmap.keyX(key)
 		hmap.keys.Set(kx, key)
-		hmap.values.Set(kx, values[i])
+		v, _ := src.Get(key)
+		hmap.values.Set(kx, v)
 	}
 }
 
