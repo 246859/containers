@@ -178,18 +178,18 @@ func TestArrayList_Iterator(t *testing.T) {
 	list.Add(data...)
 
 	it := list.Iterator()
-	for it.Next() {
+	for ; it.Valid(); it.Next() {
 		assert.Equal(t, data[it.Index()], it.Value())
 	}
 
 	it.Rewind()
-	assert.Equal(t, -1, it.Index())
+	assert.Equal(t, 0, it.Index())
 
 	it.Reverse()
 
 	it.Rewind()
-	assert.Equal(t, len(data), it.Index())
-	for it.Next() {
+	assert.Equal(t, len(data)-1, it.Index())
+	for ; it.Valid(); it.Next() {
 		assert.Equal(t, data[it.Index()], it.Value())
 	}
 

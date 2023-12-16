@@ -77,7 +77,7 @@ func (a *ArrayList[T]) Contains(elem T) bool {
 }
 
 func (a *ArrayList[T]) Iterator() containers.IndexIterator[T] {
-	return newListIterator[T](a)
+	return newIterator[T](a)
 }
 
 func (a *ArrayList[T]) Values() (_ []T) {
@@ -85,8 +85,8 @@ func (a *ArrayList[T]) Values() (_ []T) {
 		return
 	}
 	var vs []T
-	it := a.Iterator()
-	for it.Next() {
+
+	for it := a.Iterator(); it.Valid(); it.Next() {
 		vs = append(vs, it.Value())
 	}
 	return vs
@@ -115,8 +115,7 @@ func (a *ArrayList[T]) Join(list List[T]) {
 		return
 	}
 
-	it := list.Iterator()
-	for it.Next() {
+	for it := list.Iterator(); it.Valid(); it.Next() {
 		a.Add(it.Value())
 	}
 }

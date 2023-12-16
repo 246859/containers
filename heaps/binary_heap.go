@@ -103,8 +103,8 @@ func (heap *BinaryHeap[T]) Iterator() containers.IndexIterator[T] {
 
 func (heap *BinaryHeap[T]) Values() []T {
 	var vals []T
-	it := heap.Iterator()
-	for it.Next() {
+
+	for it := heap.Iterator(); it.Valid(); it.Next() {
 		vals = append(vals, it.Value())
 	}
 	return vals

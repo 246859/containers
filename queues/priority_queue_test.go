@@ -58,14 +58,14 @@ func TestPriorityQueue_Iterator(t *testing.T) {
 	pQueue.Push(data...)
 
 	it := pQueue.Iterator()
-	for it.Next() {
+	for ; it.Valid(); it.Next() {
 		it.Value()
 	}
 
 	it.Reverse()
 	it.Rewind()
 
-	for it.Next() {
+	for ; it.Valid(); it.Next() {
 		it.Value()
 	}
 }

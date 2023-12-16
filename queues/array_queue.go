@@ -43,8 +43,8 @@ func (queue *ArrayQueue[T]) Iterator() containers.IndexIterator[T] {
 
 func (queue *ArrayQueue[T]) Values() []T {
 	var vals []T
-	it := queue.Iterator()
-	for it.Next() {
+
+	for it := queue.Iterator(); it.Valid(); it.Next() {
 		vals = append(vals, it.Value())
 	}
 	return vals
