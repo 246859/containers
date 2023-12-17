@@ -19,8 +19,11 @@ type Iterator[K any, V any] interface {
 	// Reverse changes the iterator orientation
 	Reverse()
 
-	// Next returns iterator has reached the end of the container
-	Next() bool
+	// Valid returns true if the iterator has not reaches the end
+	Valid() bool
+
+	// Next move the index to the next element
+	Next()
 
 	// Index returns iterator current index
 	Index() K

@@ -4,9 +4,10 @@ import "github.com/246859/containers"
 
 var _ containers.IndexIterator[any] = (*Iterator[any])(nil)
 
-func newListIterator[T any](list List[T]) *Iterator[T] {
+func newIterator[T any](list List[T]) *Iterator[T] {
 	it := &Iterator[T]{
 		list: list,
+		// record the current size
 		size: list.Size(),
 	}
 	it.Rewind()
@@ -21,10 +22,13 @@ type Iterator[T any] struct {
 	reverse bool
 }
 
+func (i *Iterator[T]) Valid() bool {
+	return 0 <= i.index && i.index < i.size
+}
 func (i *Iterator[T]) Rewind() {
-	i.index = -1
+	i.index = 0
 	if i.reverse {
-		i.index = i.size
+		i.index = i.size - 1
 	}
 }
 
@@ -32,22 +36,26 @@ func (i *Iterator[T]) Reverse() {
 	i.reverse = !i.reverse
 }
 
-func (i *Iterator[T]) Next() bool {
-	if !i.reverse && i.index < i.size {
-		i.index++
-		return i.index < i.size
-	} else if i.reverse && i.index >= 0 {
-		i.index--
-		return i.index >= 0
+func (i *Iterator[T]) Next() {
+	if !i.Valid() {
+		return
 	}
-	return false
+
+	if i.reverse {
+		i.index--
+	} else {
+		i.index++
+	}
 }
 
 func (i *Iterator[T]) Index() int {
 	return i.index
 }
 
-func (i *Iterator[T]) Value() T {
+func (i *Iterator[T]) Value() (_ T) {
+	if !i.Valid() {
+		return
+	}
 	v, _ := i.list.Get(i.index)
 	return v
 }

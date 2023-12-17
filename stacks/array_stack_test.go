@@ -46,14 +46,14 @@ func TestArrayStack_Iterator(t *testing.T) {
 	stack.Push(data[5:]...)
 
 	it := stack.Iterator()
-	for it.Next() {
+	for ; it.Valid(); it.Next() {
 		assert.Equal(t, data[it.Index()], it.Value())
 	}
 
 	it.Reverse()
 	it.Rewind()
 
-	for it.Next() {
+	for ; it.Valid(); it.Next() {
 		assert.Equal(t, data[it.Index()], it.Value())
 	}
 }

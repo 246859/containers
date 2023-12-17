@@ -87,14 +87,14 @@ func TestBinaryHeap_Iterator(t *testing.T) {
 	heap.Push(data...)
 
 	it := heap.Iterator()
-	for it.Next() {
+	for ; it.Valid(); it.Next() {
 		it.Value()
 	}
 
 	it.Reverse()
 	it.Rewind()
 
-	for it.Next() {
+	for ; it.Valid(); it.Next() {
 		it.Value()
 	}
 }

@@ -36,13 +36,13 @@ func (stack *ArrayStack[T]) Peek() (_ T, _ bool) {
 	return stack.s[len(stack.s)-1], true
 }
 func (stack *ArrayStack[T]) Iterator() containers.IndexIterator[T] {
-	return internal.NewSliceIterator(stack.s)
+	return internal.NewSliceIterator(stack.s[:stack.Size()])
 }
 
 func (stack *ArrayStack[T]) Values() []T {
 	var vals []T
-	it := stack.Iterator()
-	for it.Next() {
+
+	for it := stack.Iterator(); it.Valid(); it.Next() {
 		vals = append(vals, it.Value())
 	}
 	return vals
