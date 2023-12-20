@@ -30,10 +30,10 @@
   - LinkedQueue
   - PriorityQueue ✔️ 
   - CircularQueue
-  - DeQueue
+  - DeQueue ✔️
   
 - stack
-  - ArrayStack
+  - ArrayStack ✔️
   - LinkedStack
   
 - heap
