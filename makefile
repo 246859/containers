@@ -4,7 +4,7 @@ lint:
 
 test:
 	make lint
-	go test -v ./...
+	go test -v -count=1 ./...
 
 build:
 	make test
