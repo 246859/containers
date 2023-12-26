@@ -3,7 +3,6 @@
 - list
   - ArrayList ✔️
   - LinkedList
-  - SinglyList
 
 - map
   - HashMap
