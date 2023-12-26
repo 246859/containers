@@ -112,9 +112,11 @@ func (a *ArrayList[T]) Join(list List[T]) {
 		return
 	}
 
+	var elems []T
 	for it := list.Iterator(); it.Valid(); it.Next() {
-		a.Add(it.Value())
+		elems = append(elems, it.Value())
 	}
+	a.Add(elems...)
 }
 
 func (a *ArrayList[T]) String() string {
