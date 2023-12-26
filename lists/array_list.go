@@ -9,17 +9,15 @@ import (
 var _ List[any] = (*ArrayList[any])(nil)
 
 // NewArrayList returns a new ArrayList with the given capacity
-func NewArrayList[T any](capacity int, equal containers.Equal[T]) *ArrayList[T] {
+func NewArrayList[T any](capacity int) *ArrayList[T] {
 	list := &ArrayList[T]{
 		elems: make([]T, 0, capacity),
-		equal: equal,
 	}
 	return list
 }
 
 type ArrayList[T any] struct {
 	elems []T
-	equal containers.Equal[T]
 }
 
 func (a *ArrayList[T]) Get(i int) (_ T, _ bool) {
@@ -36,9 +34,9 @@ func (a *ArrayList[T]) Set(i int, elem T) {
 	a.elems[i] = elem
 }
 
-func (a *ArrayList[T]) IndexOf(elem T) int {
+func (a *ArrayList[T]) IndexOf(elem T, equal containers.Equal[T]) int {
 	for i, e := range a.elems {
-		if a.equal(e, elem) {
+		if equal(e, elem) {
 			return i
 		}
 	}
@@ -65,15 +63,15 @@ func (a *ArrayList[T]) Remove(i int) {
 	}
 }
 
-func (a *ArrayList[T]) RemoveElem(elem T) {
-	i := a.IndexOf(elem)
+func (a *ArrayList[T]) RemoveElem(elem T, equal containers.Equal[T]) {
+	i := a.IndexOf(elem, equal)
 	if i > -1 {
 		a.Remove(i)
 	}
 }
 
-func (a *ArrayList[T]) Contains(elem T) bool {
-	return a.IndexOf(elem) > -1
+func (a *ArrayList[T]) Contains(elem T, equal containers.Equal[T]) bool {
+	return a.IndexOf(elem, equal) > -1
 }
 
 func (a *ArrayList[T]) Iterator() containers.IndexIterator[T] {
@@ -105,7 +103,6 @@ func (a *ArrayList[T]) Clone() List[T] {
 	snapshot := make([]T, size)
 	copy(snapshot, a.elems[:size])
 	return &ArrayList[T]{
-		equal: a.equal,
 		elems: snapshot,
 	}
 }

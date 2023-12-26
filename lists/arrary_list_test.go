@@ -1,26 +1,23 @@
 package lists
 
 import (
-	"cmp"
 	"github.com/246859/containers"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestInitial(t *testing.T) {
-	_ = NewArrayList[int](32, containers.OrderedEqual[int])
-	_ = NewArrayList[string](32, containers.OrderedEqual[string])
+	_ = NewArrayList[int](32)
+	_ = NewArrayList[string](32)
 	type p struct {
 		age int
 	}
-	_ = NewArrayList[p](32, func(a, b p) bool {
-		return cmp.Compare(a.age, b.age) == containers.EqualTo
-	})
+	_ = NewArrayList[p](32)
 }
 
 func TestArrayList_Add(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	for i, num := range data {
@@ -32,32 +29,32 @@ func TestArrayList_Add(t *testing.T) {
 
 func TestArrayList_IndexOf(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	for i, num := range data {
-		index := list.IndexOf(num)
+		index := list.IndexOf(num, containers.OrderedEqual[int])
 		assert.Equal(t, i, index)
 	}
 
-	assert.Equal(t, -1, list.IndexOf(100))
+	assert.Equal(t, -1, list.IndexOf(100, containers.OrderedEqual[int]))
 }
 
 func TestArrayList_Contains(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	for _, num := range data {
-		assert.True(t, list.Contains(num))
+		assert.True(t, list.Contains(num, containers.OrderedEqual[int]))
 	}
 
-	assert.False(t, list.Contains(100))
+	assert.False(t, list.Contains(100, containers.OrderedEqual[int]))
 }
 
 func TestArrayList_Size(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	assert.Equal(t, len(data), list.Size())
@@ -68,7 +65,7 @@ func TestArrayList_Size(t *testing.T) {
 
 func TestArrayList_Set(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	{
@@ -88,7 +85,7 @@ func TestArrayList_Set(t *testing.T) {
 
 func TestArrayList_Insert(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	{
@@ -105,7 +102,7 @@ func TestArrayList_Insert(t *testing.T) {
 
 func TestArrayList_Remove(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	list.Remove(0)
@@ -113,18 +110,18 @@ func TestArrayList_Remove(t *testing.T) {
 	assert.True(t, b)
 	assert.NotEqual(t, 1, get)
 
-	list.RemoveElem(0)
-	list.RemoveElem(2)
-	list.RemoveElem(3)
+	list.RemoveElem(0, containers.OrderedEqual[int])
+	list.RemoveElem(2, containers.OrderedEqual[int])
+	list.RemoveElem(3, containers.OrderedEqual[int])
 
-	assert.False(t, list.Contains(0))
-	assert.False(t, list.Contains(2))
-	assert.False(t, list.Contains(3))
+	assert.False(t, list.Contains(0, containers.OrderedEqual[int]))
+	assert.False(t, list.Contains(2, containers.OrderedEqual[int]))
+	assert.False(t, list.Contains(3, containers.OrderedEqual[int]))
 }
 
 func TestArrayList_Clone(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	coneList := list.Clone()
@@ -134,11 +131,11 @@ func TestArrayList_Clone(t *testing.T) {
 
 func TestArrayList_Join(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	data1 := []int{10, 11, 12, 13, 14, 15}
-	list1 := NewArrayList[int](32, containers.OrderedEqual[int])
+	list1 := NewArrayList[int](32)
 	list1.Add(data1...)
 
 	list.Join(list1)
@@ -152,7 +149,7 @@ func TestArrayList_Join(t *testing.T) {
 
 func TestArrayList_Clear(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	assert.Equal(t, len(data), list.Size())
@@ -162,7 +159,7 @@ func TestArrayList_Clear(t *testing.T) {
 
 func TestArrayList_Values(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	values := list.Values()
@@ -174,7 +171,7 @@ func TestArrayList_Values(t *testing.T) {
 
 func TestArrayList_Iterator(t *testing.T) {
 	data := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-	list := NewArrayList[int](32, containers.OrderedEqual[int])
+	list := NewArrayList[int](32)
 	list.Add(data...)
 
 	it := list.Iterator()
