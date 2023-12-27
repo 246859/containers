@@ -285,8 +285,32 @@ func (l *LinkedList[T]) Contains(elem T, equal containers.Equal[T]) bool {
 }
 
 func (l *LinkedList[T]) Clone() List[T] {
-	//TODO implement me
-	panic("implement me")
+
+	if l.size == 0 {
+		return NewLinkedList[T]()
+	}
+
+	// clone nodes
+	h := &node[T]{}
+	ni := h
+	for it := l.Iterator(); it.Valid(); it.Next() {
+		n := &node[T]{value: it.Value()}
+		ni.next = n
+		n.prev = ni
+
+		ni = n
+	}
+
+	// clone state
+	cloneList := NewLinkedList[T]()
+	cloneList.first = h.next
+	cloneList.first.prev = nil
+	cloneList.last = ni
+	cloneList.last.next = nil
+
+	cloneList.size = l.Size()
+
+	return cloneList
 }
 
 func (l *LinkedList[T]) Join(list List[T]) {
