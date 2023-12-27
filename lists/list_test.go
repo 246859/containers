@@ -1,14 +1,13 @@
 package lists
 
 import (
-	"github.com/246859/containers"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
 func TestSwap(t *testing.T) {
 	var list List[int]
-	list = NewArrayList[int](32, containers.OrderedEqual[int])
+	list = NewArrayList[int](32)
 
 	list.Add(1, 2, 3, 4, 5)
 

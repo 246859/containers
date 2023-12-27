@@ -2,8 +2,7 @@
 
 - list
   - ArrayList ✔️
-  - LinkedList
-  - SinglyList
+  - LinkedList ✔️
 
 - map
   - HashMap
