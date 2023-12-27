@@ -26,9 +26,8 @@
   
 - queue
   - ArrayQueue ✔️
-  - LinkedQueue
+  - LinkedQueue ✔️
   - PriorityQueue ✔️ 
-  - CircularQueue
   - DeQueue ✔️
   
 - stack
