@@ -8,9 +8,7 @@ import (
 var _ Heap[any] = (*BinaryHeap[any])(nil)
 
 func NewBinaryHeap[T any](capacity int, compare containers.Compare[T]) *BinaryHeap[T] {
-	list := lists.NewArrayList[T](capacity, func(a, b T) bool {
-		return compare(a, b) == containers.EqualTo
-	})
+	list := lists.NewArrayList[T](capacity)
 
 	return &BinaryHeap[T]{
 		list: list,
