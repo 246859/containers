@@ -357,7 +357,7 @@ func (l *LinkedList[T]) String() string {
 	var b strings.Builder
 	b.WriteString("LinkedList[")
 	elems := l.Values()
-	for i, v := range l.Values() {
+	for i, v := range elems {
 		b.WriteString(fmt.Sprintf("%v", v))
 		if i != len(elems)-1 {
 			b.WriteByte(',')
