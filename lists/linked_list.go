@@ -138,7 +138,7 @@ func (l *LinkedList[T]) Insert(i int, elems ...T) {
 		// find the index
 		l.iterate(reverse, func(index int, n *node[T]) bool {
 			if index == i {
-				ni = n
+				ni = n.prev
 				return false
 			}
 			return true
@@ -168,7 +168,7 @@ func (l *LinkedList[T]) Insert(i int, elems ...T) {
 	// update state
 	if i == 0 {
 		l.first = ni.next
-		l.first.prev = ni
+		l.first.prev = nil
 		if l.size == 0 {
 			l.last = last
 		}
@@ -187,11 +187,16 @@ func (l *LinkedList[T]) unlink(n *node[T]) {
 	next := n.next
 	prev := n.prev
 
-	prev.next = next
-	next.prev = prev
+	if prev != n {
+		prev.next = next
+	}
 
-	n.prev = n
-	n.next = n
+	if next != nil {
+		next.prev = prev
+	}
+
+	n.prev = nil
+	n.next = nil
 }
 
 func (l *LinkedList[T]) Remove(i int) {
@@ -211,7 +216,28 @@ func (l *LinkedList[T]) Remove(i int) {
 		return true
 	})
 
-	l.unlink(ni)
+	// unlink the node
+	next := ni.next
+	prev := ni.prev
+
+	if prev != nil {
+		prev.next = next
+	}
+
+	if next != nil {
+		next.prev = prev
+	}
+
+	if i == 0 {
+		l.first = next
+	} else if i == l.size-1 {
+		l.last = prev
+	}
+
+	ni.prev = nil
+	ni.next = nil
+
+	l.size--
 }
 
 func (l *LinkedList[T]) RemoveElem(elem T, equal containers.Equal[T]) {
@@ -220,15 +246,38 @@ func (l *LinkedList[T]) RemoveElem(elem T, equal containers.Equal[T]) {
 	}
 
 	var ni *node[T]
+	i := -1
+	// find the element
 	l.iterate(true, func(index int, n *node[T]) bool {
 		if equal(elem, n.value) {
 			ni = n
+			i = index
 			return false
 		}
 		return true
 	})
 
-	l.unlink(ni)
+	// unlink the node
+	next := ni.next
+	prev := ni.prev
+
+	if prev != nil {
+		prev.next = next
+	}
+
+	if next != nil {
+		next.prev = prev
+	}
+
+	if i == 0 {
+		l.first = next
+	} else if i == l.size-1 {
+		l.last = prev
+	}
+
+	ni.prev = nil
+	ni.next = nil
+	l.size--
 }
 
 func (l *LinkedList[T]) Contains(elem T, equal containers.Equal[T]) bool {
