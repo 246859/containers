@@ -8,4 +8,6 @@ type Stack[T any] interface {
 	Peek() (T, bool)
 
 	containers.Container[T]
+
+	containers.IndexIterable[T]
 }
