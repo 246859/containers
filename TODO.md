@@ -33,7 +33,7 @@
   
 - stack
   - ArrayStack ✔️
-  - LinkedStack
+  - LinkedStack ✔️
   
 - heap
   - BinaryHeap ✔️
