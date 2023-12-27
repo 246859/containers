@@ -135,3 +135,16 @@ func TestLinkedList_Contains(t *testing.T) {
 
 	assert.False(t, contains)
 }
+
+func TestLinkedList_Clone(t *testing.T) {
+	list := NewLinkedList[int]()
+	list.Add(1, 2, 3, 4, 5, 6)
+
+	clone := list.Clone()
+	assert.EqualValues(t, list.Size(), clone.Size())
+
+	clone.Remove(0)
+
+	assert.EqualValues(t, 6, list.Size())
+	assert.EqualValues(t, 5, clone.Size())
+}
